@@ -1,0 +1,112 @@
+/* src/styles/mytasks.scss */
+
+.mytasks-page {
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #1e1e2f;
+  color: #f8f9fa;
+
+  .mytasks-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0d6efd;
+      letter-spacing: 0.5px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      button {
+        background: #26293b;
+        color: #adb5bd;
+        border: 1px solid #495057;
+        padding: 0.6rem 1.2rem;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        &:hover {
+          color: #ffffff;
+          background-color: #0d6efd;
+          border-color: #0d6efd;
+        }
+
+        &.active {
+          background-color: #0d6efd;
+          color: #fff;
+          border-color: #0d6efd;
+          box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
+        }
+      }
+    }
+  }
+
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 0.5rem;
+
+    .task-card {
+      background-color: #26293b;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 18px rgba(13, 110, 253, 0.25);
+      }
+
+      h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #f8f9fa;
+        margin-bottom: 0.5rem;
+      }
+
+      .credits {
+        font-size: 0.95rem;
+        color: #cfcfcf;
+      }
+    }
+  }
+
+  .empty-msg {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #868e96;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .mytasks-header {
+      align-items: center;
+
+      h2 {
+        text-align: center;
+      }
+    }
+
+    .tabs {
+      justify-content: center;
+    }
+
+    .task-list {
+      align-items: center;
+    }
+  }
+}

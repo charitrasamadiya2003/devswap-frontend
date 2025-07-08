@@ -1,12 +1,16 @@
 // src/pages/Register.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import "../styles/register.scss";
 
 export default function Register() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const params = new URLSearchParams(location.search);
+  const role = params.get("role") || "developer";
 
   const [formData, setFormData] = useState({
     username: "",
@@ -27,6 +31,7 @@ export default function Register() {
       const fakeUser = {
         username: formData.username,
         email: formData.email,
+        role: role,
       };
       const fakeToken = "sample-access-token";
 
@@ -37,42 +42,116 @@ export default function Register() {
     }
   };
 
+  const renderRoleSpecificInfo = () => {
+    if (role === "developer") {
+      return (
+        <>
+          <div className="stats">
+            <h3>💼 DevSwap Benefits</h3>
+            <ul>
+              <li>🛠 Hands-on coding tasks</li>
+              <li>💰 Earn credits & build portfolio</li>
+              <li>🤝 Connect with companies & HRs</li>
+            </ul>
+          </div>
+          <div className="testimonials">
+            <blockquote>
+              “I gained real-world experience and built my confidence.”
+            </blockquote>
+            <span>– Aryan, MERN Stack Dev</span>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <div className="stats">
+            <h3>📊 Why HRs Join</h3>
+            <ul>
+              <li>🎯 Outsource technical tasks fast</li>
+              <li>⏱ Save hiring & screening time</li>
+              <li>📈 Access pre-vetted dev talent</li>
+            </ul>
+          </div>
+          <div className="testimonials">
+            <blockquote>
+              “DevSwap reduced our task outsourcing time by 70%.”
+            </blockquote>
+            <span>– Niharika, HR at XoroTech</span>
+          </div>
+        </>
+      );
+    }
+  };
+
   return (
-    <div className="register-page">
-      <form onSubmit={handleSubmit} className="register-form">
-        <h2>Register for DevSwap</h2>
-        {error && <p className="error">{error}</p>}
+    <div className="register-container">
+      <div className="register-left">
+        <div className="branding">
+          <img src="/logo.png" alt="DevSwap Logo" className="logo" />
+          <h1>DevSwap</h1>
+          <p className="tagline">Where Devs and HRs Collaborate</p>
+        </div>
 
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
+        <h2>Register as {role === "hr" ? "HR" : "Developer"}</h2>
+        <p className="subheading">Create your account and start earning credits.</p>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+        <form onSubmit={handleSubmit} className="register-form">
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Your name"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
-        <button type="submit">Register</button>
-        <p>Already have an account? <a href="/">Login</a></p>
-      </form>
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="••••••••"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit">Register</button>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+
+        <p className="bottom-text">
+          Already registered?{" "}
+          <Link to={`/login?role=${role}`}>Login as {role === "hr" ? "HR" : "Developer"}</Link>
+        </p>
+      </div>
+
+      <div className="register-right">
+        <div className="illustration">
+          <img src="/illustration.svg" alt="Register Illustration" />
+        </div>
+
+        {renderRoleSpecificInfo()}
+
+        <div className="footer-note">
+          <small>
+            Want to switch role?{" "}
+            <Link to="/register?role=developer">Developer</Link> |{" "}
+            <Link to="/register?role=hr">HR</Link>
+          </small>
+        </div>
+      </div>
     </div>
   );
 }

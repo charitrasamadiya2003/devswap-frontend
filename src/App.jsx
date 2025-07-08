@@ -11,23 +11,28 @@ import Navbar from "./components/Navbar.jsx";
 
 export default function App() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        {/* Protected Routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/tasks" element={<TaskFeed />} />
-          <Route path="/post" element={<PostTask />} />
-          <Route path="/my-tasks" element={<MyTasks />} />
-        </Route>
+      {/* Protected Routes with Navbar */}
+      <Route
+        element={
+          <>
+            <Navbar />
+            <ProtectedRoute />
+          </>
+        }
+      >
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/tasks" element={<TaskFeed />} />
+        <Route path="/post" element={<PostTask />} />
+        <Route path="/my-tasks" element={<MyTasks />} />
+      </Route>
 
-        {/* 404 Page */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
+      {/* 404 Page */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }

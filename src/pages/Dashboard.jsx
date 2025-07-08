@@ -9,11 +9,11 @@ export default function Dashboard() {
   return (
     <div className="dashboard-wrapper">
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className="dashboard-sidebar">
         <div className="profile-box">
           <div className="avatar">{user?.username?.[0] || "D"}</div>
           <h3>{user?.username || "Developer"}</h3>
-          <p>🚀 Full Stack Developer</p>
+          <p className="role-tag">🚀 Full Stack Developer</p>
           <div className="credit-stats">
             <span>💰 Credits</span>
             <strong>{user?.credits || 120}</strong>
@@ -23,9 +23,14 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="dashboard-main">
-        <div className="banner">
-          <h1>Welcome to <span className="brand">DevSwap</span> 👋</h1>
-          <p>Collaborate, contribute, and earn credits to build your dream projects.</p>
+        <div className="welcome-banner">
+          <h1>
+            Welcome to <span className="brand">DevSwap</span> 👋
+          </h1>
+          <p>
+            Collaborate, contribute, and earn credits to build your dream
+            projects.
+          </p>
         </div>
 
         <div className="actions-grid">
@@ -36,7 +41,10 @@ export default function Dashboard() {
 
         <div className="earn-section" id="credits">
           <h2>💼 Earn Credits</h2>
-          <p>Pick tasks from the feed and get rewarded. More credits = more flexibility to post your own.</p>
+          <p>
+            Pick tasks from the feed and get rewarded. More credits = more
+            flexibility to post your own.
+          </p>
           <Link to="/tasks" className="earn-btn">Explore Open Tasks</Link>
         </div>
       </main>

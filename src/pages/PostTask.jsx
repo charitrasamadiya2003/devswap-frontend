@@ -1,6 +1,6 @@
 // src/pages/PostTask.jsx
 import { useState } from "react";
-import "../styles/global.scss";
+import "../styles/posttask.scss";
 
 export default function PostTask() {
   const [formData, setFormData] = useState({
@@ -21,48 +21,54 @@ export default function PostTask() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simulate posting
     console.log("Task posted:", formData);
-    setMessage("Task posted successfully!");
+    setMessage("✅ Task posted successfully!");
     setFormData({ title: "", description: "", credits: "" });
+
+    setTimeout(() => setMessage(""), 3000);
   };
 
   return (
-    <div className="page-container">
-      <h2>Post a New Task</h2>
+    <div className="post-task-container">
+      <div className="header">
+        <h2>📤 Post a New Task</h2>
+        <p>Share a task for developers to pick and collaborate on.</p>
+      </div>
 
       <form onSubmit={handleSubmit} className="task-form">
+        <label>Task Title</label>
         <input
           type="text"
           name="title"
-          placeholder="Task title"
+          placeholder="e.g. Build Landing Page UI"
           value={formData.title}
           onChange={handleChange}
           required
         />
 
+        <label>Description</label>
         <textarea
           name="description"
-          placeholder="Task description"
+          placeholder="Provide details, requirements, and any assets or links..."
           value={formData.description}
           onChange={handleChange}
-          rows={4}
+          rows={5}
           required
         />
 
+        <label>Credits</label>
         <input
           type="number"
           name="credits"
-          placeholder="Credits"
+          placeholder="e.g. 10"
           value={formData.credits}
           onChange={handleChange}
           required
         />
 
-        <button type="submit">Post Task</button>
+        <button type="submit">🚀 Post Task</button>
+        {message && <p className="success-message">{message}</p>}
       </form>
-
-      {message && <p style={{ color: "green", marginTop: "1rem" }}>{message}</p>}
     </div>
   );
 }

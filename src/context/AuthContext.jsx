@@ -21,12 +21,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (accessToken && !user) {
-      setUser({ username: "DevUser" }); // Placeholder logic
+      // You can replace this with your actual user fetching logic
+      setUser({ username: "DevUser" });
     }
   }, [accessToken, user]);
 
+  const isLoggedIn = !!user;
+
   return (
-    <AuthContext.Provider value={{ user, accessToken, login, logout }}>
+    <AuthContext.Provider value={{ user, accessToken, login, logout, isLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );

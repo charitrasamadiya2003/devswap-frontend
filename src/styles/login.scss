@@ -1,59 +1,191 @@
 /* src/styles/login.scss */
-.login-page {
+
+.login-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  background:  rgb(76, 56, 59);
-;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #1e1e2f;
+  color: #f8f9fa;
 
-  .login-form {
-    background: white;
-    padding: 2rem 3rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
+  .login-left {
+    flex: 1;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #26293b;
+    box-shadow: inset -1px 0 0 #343a40;
 
-    h2 {
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
+    .branding {
+      margin-bottom: 2rem;
 
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
+      h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0d6efd;
+      }
 
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: #00d8ff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-
-      &:hover {
-        background-color: #00bcd4;
+      .tagline {
+        font-size: 0.95rem;
+        color: #adb5bd;
       }
     }
 
-    p {
-      margin-top: 1rem;
-      text-align: center;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .subheading {
+      font-size: 0.95rem;
+      color: #adb5bd;
+      margin-bottom: 2rem;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      label {
+        font-size: 0.9rem;
+        color: #ced4da;
+      }
+
+      input {
+        padding: 0.75rem;
+        border-radius: 10px;
+        background-color: #1e1e2f;
+        border: 1px solid #495057;
+        color: #f8f9fa;
+        font-size: 0.95rem;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #0d6efd;
+          box-shadow: 0 0 5px rgba(13, 110, 253, 0.4);
+        }
+      }
+
+      button {
+        margin-top: 1rem;
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        color: #fff;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: linear-gradient(90deg, #0b5ed7, #520dc2);
+        }
+      }
+
+      .error-message {
+        color: #ff4d4f;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+    }
+
+    .bottom-text {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #adb5bd;
 
       a {
-        color: #00d8ff;
+        color: #0d6efd;
+        font-weight: 600;
         text-decoration: none;
 
         &:hover {
           text-decoration: underline;
         }
       }
+    }
+  }
+
+  .login-right {
+    flex: 1;
+    padding: 4rem;
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    gap: 2rem;
+
+    .illustration {
+      text-align: center;
+      img {
+        max-width: 100%;
+        max-height: 200px;
+      }
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      font-size: 1rem;
+      line-height: 1.8rem;
+
+      li {
+        margin-bottom: 0.4rem;
+      }
+    }
+
+    .testimonials {
+      font-style: italic;
+      font-size: 0.95rem;
+
+      blockquote {
+        margin: 0 0 0.5rem 0;
+        font-style: italic;
+      }
+
+      span {
+        font-size: 0.85rem;
+        color: #e4e4e4;
+      }
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.85rem;
+
+      a {
+        color: #fff;
+        font-weight: 600;
+        text-decoration: underline;
+
+        &:hover {
+          color: #d1d1ff;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    .login-right {
+      display: none;
+    }
+
+    .login-left {
+      width: 100%;
+      padding: 2rem;
     }
   }
 }
