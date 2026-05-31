@@ -1,112 +1,406 @@
-/* src/styles/mytasks.scss */
+// src/styles/mytasks.scss
 
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+// ─── Tokens ───────────────────────────────────────────────────────────────────
+$bg-page:       #0f1117;
+$bg-panel:      #161b27;
+$bg-card:       #1c2233;
+$bg-card-hover: #202840;
+$border:        rgba(255, 255, 255, 0.07);
+$border-hover:  rgba(255, 255, 255, 0.14);
+
+$blue:          #4f8ef7;
+$purple:        #7c5df9;
+$teal:          #4aeabc;
+$green:         #34d399;
+$amber:         #fbbf24;
+
+$text-primary:  #f0f4ff;
+$text-muted:    #7b8db0;
+$text-label:    #a0aec0;
+
+$font-display:  'Sora', 'Segoe UI', sans-serif;
+$font-body:     'DM Sans', 'Segoe UI', sans-serif;
+
+// ─── Page wrapper ─────────────────────────────────────────────────────────────
 .mytasks-page {
-  padding: 2rem 1rem;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #1e1e2f;
-  color: #f8f9fa;
-
-  .mytasks-header {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-
-    h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #0d6efd;
-      letter-spacing: 0.5px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-
-      button {
-        background: #26293b;
-        color: #adb5bd;
-        border: 1px solid #495057;
-        padding: 0.6rem 1.2rem;
-        border-radius: 12px;
-        font-weight: 500;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        cursor: pointer;
-
-        &:hover {
-          color: #ffffff;
-          background-color: #0d6efd;
-          border-color: #0d6efd;
-        }
-
-        &.active {
-          background-color: #0d6efd;
-          color: #fff;
-          border-color: #0d6efd;
-          box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
-        }
-      }
-    }
-  }
-
-  .task-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    padding: 0.5rem;
-
-    .task-card {
-      background-color: #26293b;
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease;
-
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 6px 18px rgba(13, 110, 253, 0.25);
-      }
-
-      h4 {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #f8f9fa;
-        margin-bottom: 0.5rem;
-      }
-
-      .credits {
-        font-size: 0.95rem;
-        color: #cfcfcf;
-      }
-    }
-  }
-
-  .empty-msg {
-    font-style: italic;
-    font-size: 0.95rem;
-    color: #868e96;
-    text-align: center;
-    margin-top: 2rem;
-  }
+  min-height: 100vh;
+  background-color: $bg-page;
+  font-family: $font-body;
+  color: $text-primary;
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
-    .mytasks-header {
-      align-items: center;
+    padding: 1.5rem 1.25rem;
+    gap: 1.5rem;
+  }
+}
 
-      h2 {
-        text-align: center;
-      }
-    }
+// ─── Header ───────────────────────────────────────────────────────────────────
+.mytasks-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
 
-    .tabs {
-      justify-content: center;
-    }
+.header-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
 
-    .task-list {
-      align-items: center;
+.mytasks-header h1 {
+  font-family: $font-display;
+  font-size: 2rem;
+  font-weight: 800;
+  color: $text-primary;
+  line-height: 1.15;
+  margin-bottom: 0.4rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+  }
+}
+
+.header-sub {
+  font-size: 0.9rem;
+  color: $text-muted;
+  line-height: 1.5;
+}
+
+// ─── Summary chips ────────────────────────────────────────────────────────────
+.summary-chips {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.65rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid $border;
+  background: $bg-card;
+  min-width: 72px;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: $border-hover;
+  }
+
+  .chip-num {
+    font-family: $font-display;
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .chip-label {
+    font-size: 0.72rem;
+    color: $text-muted;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  &.chip-blue   .chip-num { color: $blue; }
+  &.chip-purple .chip-num { color: lighten($purple, 18%); }
+  &.chip-teal   .chip-num { color: $teal; }
+}
+
+// ─── Tab bar ──────────────────────────────────────────────────────────────────
+.tab-bar {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 0.4rem;
+  width: fit-content;
+}
+
+.tab-btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  font-family: $font-body;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $text-muted;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+
+  svg { opacity: 0.6; transition: opacity 0.2s ease; }
+
+  .tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: $text-muted;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  &.active {
+    color: $text-primary;
+    font-weight: 600;
+    background: $bg-card;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+
+    svg { opacity: 1; color: $blue; }
+
+    .tab-count {
+      background: rgba($blue, 0.15);
+      color: $blue;
     }
   }
+
+  &:hover:not(.active) {
+    color: $text-label;
+    svg { opacity: 0.9; }
+  }
+}
+
+// ─── Task list area ───────────────────────────────────────────────────────────
+.task-list-area {
+  flex: 1;
+}
+
+// ─── Task grid ────────────────────────────────────────────────────────────────
+.task-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.task-row-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 14px;
+  background: $bg-card;
+  border: 1px solid $border;
+  overflow: hidden;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: $border-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  }
+
+  // Override TaskCard's own card styles to blend in seamlessly
+  .task-card,
+  > *:first-child {
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    margin: 0;
+  }
+}
+
+// ─── Task meta row (below TaskCard) ──────────────────────────────────────────
+.task-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1.25rem;
+  border-top: 1px solid $border;
+  background: rgba(255, 255, 255, 0.02);
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    gap: 0.6rem;
+  }
+}
+
+// Status badge
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &.status-open {
+    background: rgba($green, 0.1);
+    border: 1px solid rgba($green, 0.25);
+    color: $green;
+    .status-dot { background: $green; box-shadow: 0 0 5px $green; }
+  }
+
+  &.status-progress {
+    background: rgba($amber, 0.1);
+    border: 1px solid rgba($amber, 0.25);
+    color: $amber;
+    .status-dot {
+      background: $amber;
+      box-shadow: 0 0 5px $amber;
+      animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+  }
+
+  &.status-done {
+    background: rgba($blue, 0.1);
+    border: 1px solid rgba($blue, 0.2);
+    color: $blue;
+    .status-dot { background: $blue; }
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.75); }
+}
+
+.task-date {
+  font-size: 0.78rem;
+  color: $text-muted;
+  margin-left: auto;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+  }
+}
+
+.task-credits {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $teal;
+
+  .credits-icon { font-size: 0.9rem; }
+}
+
+// ─── Empty state ──────────────────────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: 16px;
+  gap: 0.75rem;
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    filter: grayscale(0.3);
+  }
+
+  h3 {
+    font-family: $font-display;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: $text-muted;
+    max-width: 320px;
+    line-height: 1.6;
+  }
+}
+
+.empty-cta {
+  margin-top: 0.5rem;
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  border-radius: 9px;
+  background: linear-gradient(135deg, $blue, $purple);
+  color: white;
+  font-family: $font-display;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 14px rgba($blue, 0.3);
+  transition: opacity 0.18s ease, transform 0.15s ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+}
+
+// ─── Skeleton loading ─────────────────────────────────────────────────────────
+.skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.skeleton-card {
+  padding: 1.5rem 1.5rem;
+  border-radius: 14px;
+  background: $bg-card;
+  border: 1px solid $border;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skel {
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+
+  &.skel-title { height: 18px; width: 55%; }
+  &.skel-meta  { height: 13px; width: 30%; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

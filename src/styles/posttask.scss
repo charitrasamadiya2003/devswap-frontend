@@ -1,84 +1,401 @@
-/* src/styles/posttask.scss */
+// src/styles/posttask.scss
 
-.post-task-container {
-  max-width: 700px;
-  margin: 2rem auto;
-  background-color: #1e1e2f;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  color: #f8f9fa;
-  font-family: 'Segoe UI', sans-serif;
+// ─── Tokens ───────────────────────────────────────────────────────────────────
+$bg-page:       #0f1117;
+$bg-panel:      #161b27;
+$bg-card:       #1c2233;
+$bg-input:      #1c2233;
+$border:        rgba(255, 255, 255, 0.07);
+$border-focus:  #4f8ef7;
 
-  .header {
-    text-align: center;
-    margin-bottom: 2rem;
+$blue:          #4f8ef7;
+$purple:        #7c5df9;
+$teal:          #4aeabc;
+$green:         #34d399;
+$red:           #f87171;
+$amber:         #fbbf24;
 
-    h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #0d6efd;
-    }
+$text-primary:  #f0f4ff;
+$text-muted:    #7b8db0;
+$text-label:    #a0aec0;
 
-    p {
-      font-size: 0.95rem;
-      color: #adb5bd;
-    }
-  }
+$font-display:  'Sora', 'Segoe UI', sans-serif;
+$font-body:     'DM Sans', 'Segoe UI', sans-serif;
 
-  .task-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    label {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #ced4da;
-    }
-
-    input,
-    textarea {
-      padding: 0.8rem;
-      border-radius: 10px;
-      background-color: #26293b;
-      border: 1px solid #495057;
-      color: #f8f9fa;
-      font-size: 0.95rem;
-      transition: border-color 0.3s ease;
-
-      &:focus {
-        outline: none;
-        border-color: #0d6efd;
-        box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
-      }
-    }
-
-    button {
-      margin-top: 1rem;
-      background: linear-gradient(90deg, #0d6efd, #6610f2);
-      color: #fff;
-      padding: 0.85rem;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s ease;
-
-      &:hover {
-        background: linear-gradient(90deg, #0b5ed7, #520dc2);
-      }
-    }
-
-    .success-message {
-      margin-top: 1rem;
-      color: #00d084;
-      font-weight: 500;
-    }
-  }
+// ─── Page ─────────────────────────────────────────────────────────────────────
+.posttask-page {
+  min-height: 100vh;
+  background-color: $bg-page;
+  font-family: $font-body;
+  color: $text-primary;
+  padding: 2.5rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
   @media (max-width: 768px) {
-    padding: 1.5rem;
+    padding: 1.5rem 1.25rem;
+    gap: 1.5rem;
+  }
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.posttask-header {
+  .header-eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+
+  h1 {
+    font-family: $font-display;
+    font-size: 2rem;
+    font-weight: 800;
+    color: $text-primary;
+    margin-bottom: 0.4rem;
+    line-height: 1.2;
+
+    @media (max-width: 768px) { font-size: 1.6rem; }
+  }
+
+  .header-sub {
+    font-size: 0.92rem;
+    color: $text-muted;
+    line-height: 1.6;
+    max-width: 520px;
+  }
+}
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+.posttask-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.75rem;
+  align-items: start;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Form card ────────────────────────────────────────────────────────────────
+.form-card {
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+// ─── Form base ────────────────────────────────────────────────────────────────
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// ─── Field ────────────────────────────────────────────────────────────────────
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.35rem;
+
+  label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $text-label;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .required {
+    color: $red;
+    font-size: 0.85rem;
+  }
+
+  input,
+  textarea,
+  select {
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    background-color: $bg-input;
+    border: 1.5px solid $border;
+    color: $text-primary;
+    font-size: 0.95rem;
+    font-family: $font-body;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+
+    &::placeholder { color: rgba($text-muted, 0.5); }
+
+    &:focus {
+      outline: none;
+      border-color: $border-focus;
+      box-shadow: 0 0 0 3px rgba($blue, 0.15);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 140px;
+    line-height: 1.6;
+  }
+}
+
+// ─── Char count ───────────────────────────────────────────────────────────────
+.char-count {
+  font-size: 0.75rem;
+  color: $text-muted;
+  text-align: right;
+  margin-top: 0.25rem;
+
+  &.warn { color: $amber; }
+}
+
+// ─── Field row (two columns) ──────────────────────────────────────────────────
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Select ───────────────────────────────────────────────────────────────────
+.select-wrap {
+  position: relative;
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding-right: 2.5rem;
+
+    option {
+      background: $bg-card;
+      color: $text-primary;
+    }
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-muted;
+    pointer-events: none;
+  }
+}
+
+// ─── Credits input ────────────────────────────────────────────────────────────
+.credits-input-wrap {
+  position: relative;
+
+  .credits-prefix {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    pointer-events: none;
+  }
+
+  input {
+    padding-left: 2.4rem;
+  }
+}
+
+// ─── Date input ───────────────────────────────────────────────────────────────
+input[type="date"] {
+  color-scheme: dark;
+}
+
+// ─── Alert messages ───────────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  animation: fade-in 0.3s ease;
+
+  &.alert-success {
+    background: rgba($green, 0.1);
+    border: 1px solid rgba($green, 0.25);
+    color: $green;
+  }
+
+  &.alert-error {
+    background: rgba($red, 0.08);
+    border: 1px solid rgba($red, 0.2);
+    color: $red;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ─── Submit button ────────────────────────────────────────────────────────────
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, $blue, $purple);
+  color: white;
+  font-family: $font-display;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 20px rgba($blue, 0.3);
+
+  svg { transition: transform 0.2s ease; }
+
+  &:hover:not(:disabled) {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba($blue, 0.45);
+    svg { transform: translateX(3px); }
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// ─── Spinner ──────────────────────────────────────────────────────────────────
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ─── SIDEBAR ──────────────────────────────────────────────────────────────────
+.tips-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: sticky;
+  top: 80px;
+
+  @media (max-width: 960px) {
+    position: static;
+  }
+}
+
+.tips-card {
+  background: $bg-panel;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 1.5rem;
+
+  .tips-title {
+    font-family: $font-display;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: $text-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.tips-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+
+  li {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: $text-muted;
+    line-height: 1.5;
+
+    .tip-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+  }
+}
+
+// ─── Mini stats ───────────────────────────────────────────────────────────────
+.stats-mini {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.mini-stat {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 1rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+
+  &:hover {
+    border-color: rgba($blue, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .mini-num {
+    font-family: $font-display;
+    font-size: 1.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a8c8ff, #c4b0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .mini-label {
+    font-size: 0.7rem;
+    color: $text-muted;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 }

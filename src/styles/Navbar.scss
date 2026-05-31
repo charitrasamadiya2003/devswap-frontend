@@ -1,71 +1,412 @@
-/* src/styles/Navbar.scss */
+// src/styles/Navbar.scss
 
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+// ─── Design tokens (mirror login.scss) ───────────────────────────────────────
+$bg-nav:        rgba(17, 20, 35, 0.85);
+$bg-nav-solid:  #111423;
+$bg-input:      #1c2233;
+$border:        rgba(255, 255, 255, 0.08);
+
+$blue:          #4f8ef7;
+$purple:        #7c5df9;
+
+$text-primary:  #f0f4ff;
+$text-muted:    #7b8db0;
+$text-label:    #a0aec0;
+
+$font-display:  'Sora', 'Segoe UI', sans-serif;
+$font-body:     'DM Sans', 'Segoe UI', sans-serif;
+
+// ─── Navbar shell ─────────────────────────────────────────────────────────────
 .devswap-navbar {
   position: sticky;
   top: 0;
   z-index: 999;
-  background-color: #2c3034; // Match dark theme
-  padding: 0.75rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  font-family: 'Segoe UI', sans-serif;
+  width: 100%;
+  font-family: $font-body;
+  background: $bg-nav;
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid $border;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
 
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #0d6efd;
-    text-decoration: none;
+  &.scrolled {
+    background: $bg-nav-solid;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
   }
+}
 
-  .navbar-left,
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+// ─── Top accent line ──────────────────────────────────────────────────────────
+.navbar-accent-line {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, $blue, $purple, $blue);
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// ─── Inner layout ─────────────────────────────────────────────────────────────
+.navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1.25rem;
+  }
+}
+
+// ─── Left side ────────────────────────────────────────────────────────────────
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.navbar-logo {
+  width: 130px;
+  height: auto;
+  display: block;
+}
+
+// ─── Nav links ────────────────────────────────────────────────────────────────
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  @media (max-width: 900px) {
+    display: none;
   }
 
   a {
-    color: #dee2e6;
-    text-decoration: none;
+    position: relative;
+    padding: 0.45rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.5rem;
+    color: $text-muted;
+    text-decoration: none;
+    transition: color 0.18s ease, background 0.18s ease;
+    white-space: nowrap;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, $blue, $purple);
+      transition: transform 0.22s ease;
+    }
 
     &:hover {
-      color: #0d6efd;
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     &.active {
-      color: #0d6efd;
-      border-bottom: 2px solid #0d6efd;
-    }
-  }
-
-  .profile {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    .username {
-      color: #f8f9fa;
-      font-weight: 500;
-    }
-
-    button {
-      padding: 0.4rem 0.75rem;
-      background-color: transparent;
-      color: #ffc107;
-      border: 1px solid #ffc107;
-      border-radius: 8px;
+      color: $text-primary;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
 
-      &:hover {
-        background-color: #ffc107;
-        color: #212529;
+      &::after {
+        transform: translateX(-50%) scaleX(1);
       }
     }
   }
+}
+
+// Credits link — special glow treatment
+.credits-link {
+  display: flex !important;
+  align-items: center;
+  gap: 0.4rem;
+
+  .credits-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4aeabc;
+    box-shadow: 0 0 6px #4aeabc;
+    animation: pulse-dot 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  &:hover,
+  &.active {
+    color: #4aeabc !important;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.8); }
+}
+
+// ─── Right side ───────────────────────────────────────────────────────────────
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+// ─── Profile / logged-in state ────────────────────────────────────────────────
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid $border;
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $blue, $purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-display;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .username {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-primary;
+  }
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  font-family: $font-body;
+  font-size: 0.845rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: rgba(248, 113, 113, 0.1);
+    border-color: #f87171;
+    color: #fca5a5;
+
+    svg {
+      transform: translateX(2px);
+    }
+  }
+}
+
+// ─── Auth links (logged-out) ──────────────────────────────────────────────────
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  .login-link {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-muted;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: color 0.18s ease, background 0.18s ease;
+
+    &:hover, &.active {
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .register-btn {
+    padding: 0.45rem 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: $font-display;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, $blue, $purple);
+    box-shadow: 0 2px 12px rgba($blue, 0.3);
+    transition: opacity 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba($blue, 0.45);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// ─── Hamburger (mobile) ───────────────────────────────────────────────────────
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  span {
+    display: block;
+    height: 1.5px;
+    border-radius: 2px;
+    background: $text-muted;
+    transition: transform 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    transform-origin: center;
+  }
+
+  &.open {
+    span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  }
+
+  @media (max-width: 900px) {
+    display: flex;
+  }
+}
+
+// ─── Mobile menu drawer ───────────────────────────────────────────────────────
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1.25rem 1.25rem;
+  border-top: 1px solid $border;
+  background: $bg-nav-solid;
+  animation: slide-down 0.2s ease;
+
+  .mobile-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    border: 1px solid $border;
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $blue, $purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: $font-display;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: $text-primary;
+    }
+  }
+
+  a {
+    padding: 0.65rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $text-muted;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover, &.active {
+      background: rgba(255, 255, 255, 0.06);
+      color: $text-primary;
+    }
+
+    &.active {
+      font-weight: 600;
+      color: $blue;
+    }
+  }
+
+  .mobile-logout {
+    margin-top: 0.5rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid rgba(248, 113, 113, 0.25);
+    color: #f87171;
+    font-family: $font-body;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      background: rgba(248, 113, 113, 0.08);
+      border-color: #f87171;
+    }
+  }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
